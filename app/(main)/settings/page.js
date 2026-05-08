@@ -44,7 +44,16 @@ export default function SettingsPage() {
   ];
 
   return (
-    <div className="max-w-3xl mx-auto">
+  <div className="max-w-2xl mx-auto relative">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      <div className="animate-float absolute top-10 right-10 w-40 h-40 rounded-full opacity-5"
+        style={{ background: "linear-gradient(135deg, #4F8CFF, #667eea)" }} />
+      <div className="animate-pulse-slow absolute bottom-10 left-10 w-32 h-32 opacity-5"
+        style={{ background: "radial-gradient(circle, #a8edea 0%, transparent 70%)" }} />
+      <div className="animate-float-delayed absolute top-1/2 right-5 w-20 h-20 opacity-5"
+        style={{ background: "linear-gradient(135deg, #667eea, #4F8CFF)", borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%" }} />
+    </div>
+    <div className="relative z-10">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-800">Settings</h1>
         <p className="text-slate-500 text-sm mt-1">Manage your account and preferences</p>
@@ -268,6 +277,7 @@ export default function SettingsPage() {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 }

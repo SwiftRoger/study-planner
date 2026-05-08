@@ -172,3 +172,14 @@ html.dark .text-slate-600 {
 .card-enter-3 { animation: fadeSlideUp 0.5s ease 0.3s forwards; opacity: 0; }
 .card-enter-4 { animation: fadeSlideUp 0.5s ease 0.4s forwards; opacity: 0; }
 .card-enter-5 { animation: fadeSlideUp 0.5s ease 0.5s forwards; opacity: 0; }
+
+html.dark .from-slate-50,
+html.dark .from-blue-50,
+html.dark .from-green-50,
+html.dark .from-red-50 {
+  --tw-gradient-from: #1e293b !important;
+}
+
+html.dark .to-white {
+  --tw-gradient-to: #1e293b !important;
+}

@@ -15,6 +15,25 @@ const navItems = [
   { href: "/settings", label: "Settings", icon: "⚙️" },
 ];
 
+function PageWrapper({ children }) {
+  const pathname = usePathname();
+  const [key, setKey] = useState(0);
+
+useEffect(() => {
+  setKey(k => k + 1);
+}, [pathname]);
+
+  return (
+    <main
+      key={key}
+      className="flex-1 ml-64 p-6"
+      style={{ animation: "fadeSlideUp 0.6s ease forwards" }}
+    >
+      {children}
+    </main>
+  );
+}
+
 export default function MainLayout({ children }) {
   const pathname = usePathname();
   const [user, setUser] = useState(null);
@@ -33,6 +52,7 @@ export default function MainLayout({ children }) {
     if (next) document.documentElement.classList.add("dark");
     else document.documentElement.classList.remove("dark");
   }
+
 
   return (
     <div className={`flex min-h-screen ${dark ? "bg-slate-900" : "bg-[#F0F4FF]"}`}>
@@ -104,11 +124,7 @@ export default function MainLayout({ children }) {
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 ml-64 p-6" style={{
-  animation: "fadeSlideUp 0.6s ease forwards"
-}}>
-  {children}
-</main>
+      <PageWrapper>{children}</PageWrapper>
     </div>
   );
 }

@@ -45,7 +45,14 @@ export default function ProgressPage() {
   const maxVal = Math.max(...weeklyData.map((d) => d.total), 1);
 
   return (
-    <div className="max-w-5xl mx-auto">
+  <div className="max-w-5xl mx-auto relative">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      <div className="animate-float absolute top-20 right-20 w-32 h-32 opacity-5"
+        style={{ background: "linear-gradient(135deg, #4F8CFF, #a8edea)", borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%" }} />
+      <div className="animate-pulse-slow absolute bottom-20 left-20 w-24 h-24 rounded-full opacity-5"
+        style={{ background: "radial-gradient(circle, #667eea 0%, transparent 70%)" }} />
+    </div>
+    <div className="relative z-10">
 
       {/* Header */}
       <div className="mb-6">
@@ -190,6 +197,7 @@ export default function ProgressPage() {
             ))}
           </div>
         )}
+      </div>
       </div>
     </div>
   );

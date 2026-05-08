@@ -72,7 +72,14 @@ export default function RemindersPage() {
   }
 
   return (
-    <div className="max-w-3xl mx-auto">
+  <div className="max-w-3xl mx-auto relative">
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      <div className="animate-float absolute top-10 right-10 w-24 h-24 rounded-full opacity-5"
+        style={{ background: "linear-gradient(135deg, #ff6b6b, #ffd93d)" }} />
+      <div className="animate-float-delayed absolute bottom-20 left-10 w-16 h-16 opacity-5"
+        style={{ background: "linear-gradient(135deg, #4F8CFF, #667eea)", borderRadius: "60% 40% 30% 70% / 60% 30% 70% 40%" }} />
+    </div>
+    <div className="relative z-10">
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-slate-800">Reminders</h1>
         <p className="text-slate-500 text-sm mt-1">Stay on top of your deadlines</p>
@@ -130,6 +137,7 @@ export default function RemindersPage() {
           )}
         </div>
       )}
+    </div>
     </div>
   );
 }

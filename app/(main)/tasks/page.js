@@ -9,6 +9,7 @@ export default function TasksPage() {
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
   const [filter, setFilter] = useState("all");
+  const [animKey, setAnimKey] = useState(0);
   const [search, setSearch] = useState("");
   const [form, setForm] = useState({ title: "", subject: "", deadline: "", priority: "medium" });
   const [error, setError] = useState("");
@@ -17,6 +18,7 @@ export default function TasksPage() {
   const [suggestions, setSuggestions] = useState([]);
   const [suggesting, setSuggesting] = useState(false);
   const [suggestFor, setSuggestFor] = useState(null);
+  
 
   useEffect(() => { fetchTasks(); }, []);
 
@@ -133,8 +135,21 @@ export default function TasksPage() {
       t.subject.toLowerCase().includes(search.toLowerCase())
     );
 
+  
   return (
-    <div className="max-w-5xl mx-auto">
+  <div className="max-w-5xl mx-auto relative">
+
+    {/* Floating shapes */}
+    <div className="fixed inset-0 pointer-events-none overflow-hidden z-0">
+      <div className="animate-float absolute top-10 right-10 w-24 h-24 rounded-full opacity-5"
+        style={{ background: "linear-gradient(135deg, #4F8CFF, #667eea)" }} />
+      <div className="animate-float-delayed absolute bottom-20 left-10 w-16 h-16 opacity-5"
+        style={{ background: "linear-gradient(135deg, #a8edea, #4F8CFF)", borderRadius: "30% 70% 70% 30% / 30% 30% 70% 70%" }} />
+      <div className="animate-pulse-slow absolute top-1/2 right-20 w-32 h-32 rounded-full opacity-3"
+        style={{ background: "radial-gradient(circle, #4F8CFF 0%, transparent 70%)" }} />
+    </div>
+
+    <div className="relative z-10">
 
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
@@ -195,7 +210,7 @@ export default function TasksPage() {
       <div className="bg-white rounded-2xl shadow-sm p-4 mb-4 flex flex-col md:flex-row gap-4 items-center justify-between">
         <div className="flex gap-2">
           {["all", "pending", "completed", "overdue"].map((f) => (
-            <button key={f} onClick={() => setFilter(f)}
+            <button key={f} onClick={() => { setFilter(f); setAnimKey(k => k + 1); }}
               className={`px-4 py-1.5 rounded-xl text-sm font-medium capitalize transition-colors ${
                 filter === f ? "bg-[#4F8CFF] text-white" : "text-slate-500 hover:bg-[#EBF1FF] hover:text-[#4F8CFF]"
               }`}>
@@ -221,14 +236,15 @@ export default function TasksPage() {
               <th className="text-left px-6 py-4 font-medium">Action</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100">
+          <tbody className="divide-y divide-slate-100" key={animKey}>
             {loading ? (
               <tr><td colSpan={6} className="text-center py-10 text-slate-400">Loading...</td></tr>
             ) : filtered.length === 0 ? (
               <tr><td colSpan={6} className="text-center py-10 text-slate-400">No tasks found</td></tr>
             ) : (
               filtered.map((task) => (
-                <tr key={task.id} className="hover:bg-[#F8FAFF] transition-colors">
+                <tr key={task.id} className="hover:bg-[#F8FAFF] transition-all card-hover"
+                  style={{ animation: "fadeSlideUp 0.4s ease forwards" }}>
                   <td className="px-6 py-4">
                     <p className={`font-medium text-sm ${task.status === "completed" ? "line-through text-slate-400" : "text-slate-800"}`}>
                       {task.title}
@@ -350,5 +366,6 @@ export default function TasksPage() {
       )}
 
     </div>
+  </div>
   );
 }
