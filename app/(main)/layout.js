@@ -39,15 +39,12 @@ function TopLoadingBar() {
 
   return (
     <div className="fixed top-0 left-0 right-0 z-[100] h-1">
-      <div
-        className="h-full rounded-full transition-all ease-out"
+      <div className="h-full rounded-full transition-all ease-out"
         style={{
           width: `${width}%`,
           background: "linear-gradient(90deg, #4F8CFF, #a8edea, #667eea)",
-          duration: "300ms",
           boxShadow: "0 0 10px #4F8CFF88",
-        }}
-      />
+        }} />
     </div>
   );
 }
@@ -61,11 +58,9 @@ function PageWrapper({ children }) {
   }, [pathname]);
 
   return (
-    <main
-      key={key}
-      className="flex-1 ml-64 p-6"
-      style={{ animation: "fadeSlideUp 0.5s ease forwards" }}
-    >
+    <main key={key}
+      className="flex-1 md:ml-64 p-4 md:p-6"
+      style={{ animation: "fadeSlideUp 0.5s ease forwards" }}>
       {children}
     </main>
   );
@@ -75,12 +70,18 @@ export default function MainLayout({ children }) {
   const pathname = usePathname();
   const [user, setUser] = useState(null);
   const [dark, setDark] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   useEffect(() => {
     fetch("/api/me").then(r => r.json()).then(d => { if (d.user) setUser(d.user); });
     const saved = localStorage.getItem("darkMode");
     if (saved === "true") { setDark(true); document.documentElement.classList.add("dark"); }
   }, []);
+
+  // Close sidebar on route change on mobile
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [pathname]);
 
   function toggleDark() {
     const next = !dark;
@@ -94,17 +95,30 @@ export default function MainLayout({ children }) {
     <div className={`flex min-h-screen ${dark ? "bg-slate-900" : "bg-[#F0F4FF]"}`}>
       <TopLoadingBar />
 
+      {/* Mobile overlay */}
+      {sidebarOpen && (
+        <div className="fixed inset-0 bg-black/50 z-20 md:hidden"
+          onClick={() => setSidebarOpen(false)} />
+      )}
+
       {/* Sidebar */}
-      <aside className={`w-64 flex flex-col fixed h-full z-10 shadow-sm ${dark ? "bg-slate-800 border-r border-slate-700" : "bg-white"}`}>
+      <aside className={`w-64 flex flex-col fixed h-full z-30 shadow-sm transition-transform duration-300 ${
+        dark ? "bg-slate-800 border-r border-slate-700" : "bg-white"
+      } ${sidebarOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}>
 
         {/* Logo */}
         <div className={`p-6 border-b ${dark ? "border-slate-700" : "border-slate-100"}`}>
-          <div className="flex items-center gap-2">
-            <img src="/num-logo.png" alt="NUM Logo" className="w-10 h-10 object-contain" />
-            <div>
-              <p className={`font-bold text-sm ${dark ? "text-white" : "text-slate-800"}`}>Study Planner</p>
-              <p className={`text-xs ${dark ? "text-slate-400" : "text-slate-400"}`}>AI-Based System</p>
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <img src="/num-logo.png" alt="NUM Logo" className="w-10 h-10 object-contain" />
+              <div>
+                <p className={`font-bold text-sm ${dark ? "text-white" : "text-slate-800"}`}>Study Planner</p>
+                <p className={`text-xs ${dark ? "text-slate-400" : "text-slate-400"}`}>AI-Based System</p>
+              </div>
             </div>
+            {/* Close button mobile */}
+            <button onClick={() => setSidebarOpen(false)}
+              className="md:hidden text-slate-400 hover:text-slate-600 text-xl">✕</button>
           </div>
         </div>
 
@@ -162,7 +176,24 @@ export default function MainLayout({ children }) {
       </aside>
 
       {/* Main content */}
-      <PageWrapper>{children}</PageWrapper>
+      <div className="flex-1 md:ml-64 flex flex-col">
+        {/* Mobile top bar */}
+        <div className={`md:hidden flex items-center justify-between px-4 py-3 shadow-sm ${
+          dark ? "bg-slate-800" : "bg-white"
+        }`}>
+          <button onClick={() => setSidebarOpen(true)}
+            className={`p-2 rounded-xl ${dark ? "text-white" : "text-slate-700"}`}>
+            ☰
+          </button>
+          <div className="flex items-center gap-2">
+            <img src="/num-logo.png" alt="NUM" className="w-7 h-7 object-contain" />
+            <p className={`font-bold text-sm ${dark ? "text-white" : "text-slate-800"}`}>Study Planner</p>
+          </div>
+          <div className="w-8" />
+        </div>
+
+        <PageWrapper>{children}</PageWrapper>
+      </div>
     </div>
   );
 }
