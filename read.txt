@@ -6,3 +6,26 @@ git push
 git pull *to pull
 
 DONT FORGET TO CHANGE .env file everytime on new laptop because it local save only
+
+Step 1 — Install Node.js first:
+Download from nodejs.org → install it
+Step 2 — Clone and setup:
+bashgit clone https://github.com/SwiftRoger/study-planner.git
+cd study-planner
+npm install
+Step 3 — Create .env file in the project folder with this content:
+DATABASE_URL="file:./dev.db"
+JWT_SECRET="study_planner_super_secret_key_12345"
+GROQ_API_KEY="their-own-groq-key"
+NEWS_API_KEY="their-own-news-api-key"
+They need their own free API keys:
+
+Groq: console.groq.com
+News: newsapi.org
+
+Step 4 — Setup database and run:
+bashnpx prisma generate
+npx prisma db push
+npm run dev
+Step 5 — Open browser:
+http://localhost:3000
