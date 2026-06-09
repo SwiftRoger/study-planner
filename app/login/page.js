@@ -25,8 +25,12 @@ useEffect(() => {
     });
     const data = await res.json();
     setLoading(false);
-    if (!res.ok) { setError(data.message); return; }
-    router.push("/onboarding");
+   if (!res.ok) { setError(data.message); return; }
+if (data.role === "admin") {
+  router.push("/admin/dashboard");
+} else {
+  router.push("/onboarding");
+}
   }
 
   return (

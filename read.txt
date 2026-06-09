@@ -29,3 +29,7 @@ npx prisma db push
 npm run dev
 Step 5 — Open browser:
 http://localhost:3000
+
+admin account:
+admin@num.edu.kh
+admin123456

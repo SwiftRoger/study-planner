@@ -51,3 +51,4 @@ export async function DELETE(_, { params }) {
   });
   return NextResponse.json({ message: "Task deleted" });
 }
+}
